@@ -4,6 +4,12 @@ Prova de conceito para apoiar a análise de contratos com inteligência artifici
 
 > **Aviso:** projeto experimental, sem aprovação para produção ou uso com dados reais. As análises podem conter omissões ou erros e não substituem revisão jurídica. Use apenas documentos e dados fictícios.
 
+## Demonstração
+
+[Acessar a demonstração temporária do ContractAI](https://bloggers-designed-rug-lived.trycloudflare.com/entrar/cdTrsx2HXgyTu6lwDJLdqynw3sf5cz3-dUNJDgH3SXc)
+
+O link pode deixar de funcionar sem aviso. A demonstração permite criar uma conta: use credenciais exclusivas para teste, dados fictícios e **não envie documentos confidenciais**. A análise pode encaminhar o texto para provedores externos de IA.
+
 ## Arquitetura da POC
 
 - **Frontend:** Next.js, React, TypeScript e Tailwind CSS.
