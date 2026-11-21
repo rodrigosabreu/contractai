@@ -1,0 +1,95 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite
+
+# Alembic
+alembic/versions/*.pyc
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type checking
+.mypy_cache/
+*.pyc
+
+# Build
+dist/
+build/
+*.egg-info
+
+# Node
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE specific
+*.swp
+*.swo
+*~
+
+# Docker
+.docker/
+
+# Secrets and runtime data — never publish credentials or uploaded contracts
+.env.*
+!.env.example
+!.env.*.example
+**/.env.*
+!**/.env.example
+!**/.env.*.example
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+uploads/
+**/uploads/
+.next/
+.next*/
+.venv/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+
+# Internal discovery drafts and runtime messaging artifacts
+/docs/
+backend/control/
+backend/celerybeat-schedule*
+
+# IDE
+.vscode/
+.idea/
