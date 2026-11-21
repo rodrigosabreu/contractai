@@ -12,6 +12,12 @@ O link pode deixar de funcionar sem aviso. A demonstração permite criar uma co
 
 ## Arquitetura da POC
 
+![Diagrama da arquitetura da POC ContractAI](arquitetura-poc.png)
+
+O diagrama representa a configuração da demonstração, incluindo NVIDIA como modelo principal e OpenAI como fallback. Os componentes e o acesso são temporários e não representam uma arquitetura validada para produção.
+
+[Versão do diagrama em HTML](arquitetura-poc.html)
+
 - **Frontend:** Next.js, React, TypeScript e Tailwind CSS.
 - **Backend:** Python, FastAPI, Pydantic e SQLAlchemy.
 - **Desenvolvimento:** SQLite e arquivos locais.
