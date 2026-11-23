@@ -1,0 +1,87 @@
+{
+  "intents": [
+    {
+      "id": "261122-contractai-stabilize",
+      "name": "ContractAI Stabilization",
+      "description": "Estabilizar e madurar o ContractAI através de governança AI-DLC",
+      "projectRoot": "/opt/data/projects/contractai",
+      "projectType": "brownfield",
+      "scope": "feature",
+      "startDate": "2026-11-22T23:50:00Z",
+      "status": "inception",
+      "currentStage": "reverse-engineering",
+      "phases": {
+        "initialization": ["workspace-scaffold", "workspace-detection", "state-init"],
+        "ideation": [
+          "intent-capture",
+          "scope-definition",
+          "approval-handoff"
+        ],
+        "inception": [
+          "reverse-engineering",
+          "requirements-analysis",
+          "domain-design",
+          "contract-design",
+          "delivery-planning",
+          "approval-handoff"
+        ],
+        "construction": [
+          "functional-design",
+          "code-generation",
+          "build-and-test",
+          "ci-pipeline",
+          "quality-gates"
+        ],
+        "operation": [
+          "deployment-pipeline",
+          "environment-provisioning",
+          "deployment-execution",
+          "observability-setup",
+          "incident-response",
+          "performance-validation",
+          "feedback-optimization"
+        ]
+      },
+      "stagesCompleted": [],
+      "stagesInProgress": ["reverse-engineering"],
+      "stagesPending": [
+        "requirements-analysis",
+        "domain-design",
+        "contract-design",
+        "delivery-planning",
+        "approval-handoff",
+        "functional-design",
+        "code-generation",
+        "build-and-test",
+        "ci-pipeline",
+        "quality-gates"
+      ],
+      "configuration": {
+        "depth": "Standard",
+        "testStrategy": "Standard",
+        "reviewOverride": "",
+        "guardPolicy": "on",
+        "sensors": "on",
+        "learnings": "on",
+        "summaryConfirmation": "on",
+        "planApproval": "on",
+        "collaborators": "off"
+      },
+      "workspaceState": {
+        "projectRoot": "/opt/data/projects/contractai",
+        "languages": ["Python", "TypeScript"],
+        "frameworks": ["FastAPI", "Next.js"],
+        "buildSystem": "pip/uv (backend), npm (frontend)"
+      },
+      "runtimeState": {
+        "revisionCount": 0,
+        "constructionCheckpoints": true,
+        "constructionIteration": "unit-major",
+        "constructionExecution": "serial"
+      },
+      "baselineCommit": "ac31c4e",
+      "gitStatus": "clean",
+      "baselineCaptured": "2026-11-23T00:00:00Z"
+    }
+  ]
+}

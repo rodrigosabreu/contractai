@@ -15,6 +15,7 @@ Prova de conceito para apoiar a análise de contratos com inteligência artifici
 ## 🛠️ Stack Real
 
 ### Backend (`backend/`)
+
 | Camada | Tecnologia |
 |--------|------------|
 | **Framework** | FastAPI 0.109+ |
@@ -30,6 +31,7 @@ Prova de conceito para apoiar a análise de contratos com inteligência artifici
 | **Monitoring** | Prometheus metrics (`/metrics`), structured JSON logging, health checks |
 
 ### Frontend (`frontend/`)
+
 | Camada | Tecnologia |
 |--------|------------|
 | **Framework** | Next.js 14+ (App Router) |
@@ -95,7 +97,39 @@ contractai/
 ├── .gitignore
 ├── arquitetura-poc.png               # Diagrama de arquitetura
 ├── arquitetura-poc.html              # Versão HTML do diagrama
-└── README.md                         # Este arquivo (visão geral)
+├── README.md                         # Este arquivo (visão geral)
+├── aidlc/                            # AI-DLC Workspace (NOVO)
+│   └── spaces/
+│       └── default/
+│           ├── intents/
+│           │   ├── intents.json
+│           │   └── 261122-contractai-stabilize/
+│           │       ├── aidlc-state.md
+│           │       ├── project-description.json
+│           │       ├── ideation/
+│           │       ├── inception/
+│           │       ├── construction/
+│           │       └── audit/
+│           └── memory/
+│               ├── project.md
+│               └── phases/
+├── docs/
+│   └── adr/
+│       ├── ADR-001-stack-tecnologica.md
+│       ├── ADR-002-multi-tenancy.md
+│       ├── ADR-003-auth-jwt.md
+│       ├── ADR-004-llm-providers.md
+│       ├── ADR-005-lgpd-compliance.md
+│       ├── ADR-006-ci-cd-pipeline.md
+│       └── ADR-007-test-strategy.md
+├── handoff.md                        # Handoff ativo (template Home + AI-DLC)
+├── AGENTS.md                         # Este arquivo
+├── docker-compose.yml
+├── .env.example
+├── .gitignore
+├── arquitetura-poc.png
+├── arquitetura-poc.html
+└── README.md
 ```
 
 ---
@@ -103,6 +137,7 @@ contractai/
 ## 🚀 Comandos de Execução e Testes
 
 ### Backend (Docker Compose — recomendado)
+
 ```bash
 cd /opt/data/projects/contractai
 docker compose -f docker-compose.yml up -d
@@ -113,6 +148,7 @@ docker compose exec api alembic upgrade head
 ```
 
 ### Backend (Desenvolvimento Local — SQLite)
+
 ```bash
 cd /opt/data/projects/contractai/backend
 python3.12 -m venv .venv
@@ -131,6 +167,7 @@ uvicorn app.main:app --host 127.0.0.1 --port 8000
 > **Nota**: SQLite local não substitui PostgreSQL/pgvector para testes de integração, vector search, Redis/Celery jobs, ou integrações LLM/OAuth. Migrações Alembic são específicas para PostgreSQL/pgvector — não executar `alembic upgrade head` no SQLite.
 
 ### Frontend
+
 ```bash
 cd /opt/data/projects/contractai/frontend
 npm ci
@@ -139,6 +176,7 @@ npm run dev
 ```
 
 ### Testes
+
 ```bash
 # Backend
 cd /opt/data/projects/contractai/backend
@@ -152,6 +190,7 @@ npm run type-check
 ```
 
 ### Variáveis de Ambiente Obrigatórias
+
 Copie `.env.example` para `.env` e configure:
 - `DATABASE_URL` — PostgreSQL async URL (ex: `postgresql+asyncpg://user:pass@db:5432/contractai`)
 - `REDIS_URL` — Redis URL (ex: `redis://redis:6379/0`)
@@ -165,11 +204,13 @@ Copie `.env.example` para `.env` e configure:
 ## 🔒 Regras de Isolamento Multi-Tenant e Segurança
 
 ### Multi-Tenancy (Implementado no Backend)
+
 - **Todos os recursos** são escopados por `organization_id`
 - Usuários só acessam recursos dentro de sua organização
 - Superusers (`admin` global) acessam todas as organizações
 
 ### Papéis de Usuário (Backend)
+
 | Papel | Permissões |
 |-------|------------|
 | `admin` | Gestão completa da organização |
@@ -178,6 +219,7 @@ Copie `.env.example` para `.env` e configure:
 | `viewer` | Acesso somente leitura |
 
 ### Autenticação e Autorização
+
 - **JWT tokens** (HS256): access token 30 min, refresh token 7 dias
 - **Revogação de tokens** via JTI blacklist (logout, rotação de refresh, mudança de senha)
 - **Refresh tokens** armazenados em HttpOnly cookies
@@ -188,6 +230,7 @@ Copie `.env.example` para `.env` e configure:
 - **Input validation** via Pydantic
 
 ### LGPD Compliance (Backend)
+
 - Políticas de retenção de dados (configuráveis)
 - Endpoint de exportação de dados (`/api/v1/auth/data/export`)
 - Endpoint de exclusão de dados (`/api/v1/auth/data/delete`)
@@ -196,12 +239,14 @@ Copie `.env.example` para `.env` e configure:
 - Data Processing Agreement (DPA) ready
 
 ### Integração LLM (Backend)
+
 - **Provedores**: OpenAI (GPT-4), NVIDIA (Nemotron) — seleção via `provider` parameter
 - **Fallback** configurável via `LLM_FALLBACK_ENABLED` (default: `false`)
 - **Hermes API server (opcional)**: `HERMES_BASE_URL`, `HERMES_API_KEY`, `HERMES_MODEL` — selecionar com `provider="hermes"`
 - **Não há garantia** de segurança, isolamento, privacidade ou conformidade regulatória para conteúdo enviado a LLMs externos
 
 ### Processamento de Documentos
+
 - **PDF**: pdfplumber/pypdf + OCR fallback (Tesseract)
 - **DOCX**: python-docx
 - **TXT**: Plain text
@@ -209,7 +254,84 @@ Copie `.env.example` para `.env` e configure:
 
 ---
 
-## 🔗 Integração com Agentic Home (Skills Compartilhadas)
+## 🤖 AI-DLC Workspace (NOVO)
+
+O ContractAI agora possui um **AI-DLC Workspace** ativo em `aidlc/` para governança estruturada, memória persistente e stage gates.
+
+### Estrutura AI-DLC
+
+```
+aidlc/
+└── spaces/
+    └── default/
+        ├── intents/
+        │   ├── intents.json
+        │   └── 261122-contractai-stabilize/
+        │       ├── aidlc-state.md           # Estado execução (fase, stage, next action)
+        │       ├── project-description.json # Descrição canônica do projeto
+        │       ├── ideation/                # Fase 0: Ideação (pulável - brownfield)
+        │       ├── inception/               # Fase 1: Concepção
+        │       │   ├── reverse-engineering/
+        │       │   ├── requirements-analysis/
+        │       │   ├── domain-design/
+        │       │   ├── contract-design/
+        │       │   ├── delivery-planning/
+        │       │   └── approval-handoff/    # Gate: aprovação humana
+        │       ├── construction/            # Fase 2: Construção (futuro)
+        │       └── audit/                   # Trilha de auditoria
+        └── memory/
+            ├── project.md                   # Memória do projeto (decisões, ADRs, contexto)
+            └── phases/                      # Memória por fase
+```
+
+### Arquivos-Chave do AI-DLC
+
+| Arquivo | Descrição |
+|---------|-----------|
+| `aidlc/spaces/default/intents/261122-contractai-stabilize/aidlc-state.md` | Estado execução: fase, stage, next action, pending artifacts |
+| `aidlc/spaces/default/intents/261122-contractai-stabilize/project-description.json` | Descrição canônica do projeto (single source of truth) |
+| `aidlc/spaces/default/memory/project.md` | Memória do projeto: decisões, ADRs, contexto, bloqueios |
+| `aidlc/spaces/default/intents/261122-contractai-stabilize/inception/*/memory.md` | Observações, tradeoffs, devições por stage |
+| `aidlc/spaces/default/memory/project.md` | Memória persistente do projeto (decisões, ADRs, contexto) |
+
+### Recuperação de Contexto (Nova Sessão)
+
+```bash
+# 1. Ler descrição canônica do projeto
+cat aidlc/spaces/default/intents/261122-contractai-stabilize/project-description.json
+
+# 2. Ler estado atual
+cat aidlc/spaces/default/intents/261122-contractai-stabilize/aidlc-state.md
+
+# 3. Ler memória do projeto
+cat aidlc/spaces/default/memory/project.md
+
+# 4. Ler memory.md do stage atual (ex: inception/requirements-analysis/memory.md)
+cat aidlc/spaces/default/intents/261122-contractai-stabilize/inception/requirements-analysis/memory.md
+
+# 5. Verificar handoff ativo
+cat handoff.md
+
+# 6. Carregar skills necessárias
+skill_view(name='descoberta')
+skill_view(name='arquitetura')
+skill_view(name='desenvolvimento')
+skill_view(name='qualidade')
+```
+
+### Stage Gates (AI-DLC)
+
+| Gate | Fase | Aprovação | Evidência |
+|------|------|-----------|-----------|
+| Ideation → Inception | Auto (brownfield) | - | `scope-definition/memory.md` |
+| Inception → Construction | **PENDING** | Rodrigo Abreu | `approval-handoff/memory.md` |
+| Construction → Operation | Pendente | TL/QA | - |
+
+> **Status Atual**: Fase **Inception**, Stage **reverse-engineering** — aguardando gate `approval-handoff` para prosseguir à Construction.
+
+---
+
+## 🤝 Integração com Agentic Home (Skills Compartilhadas)
 
 Este projeto pode usar as skills compartilhadas do `agentic-home`:
 
@@ -264,6 +386,9 @@ Para cada tarefa neste projeto:
 | Skills compartilhadas | `agentic-home/skills/` |
 | Template de handoff | `agentic-home/templates/handoff.md` |
 | Template de ADR | `agentic-home/templates/adr.md` |
+| AI-DLC State | `aidlc/spaces/default/intents/261122-contractai-stabilize/aidlc-state.md` |
+| Project Memory | `aidlc/spaces/default/memory/project.md` |
+| ADRs | `docs/adr/ADR-*.md` |
 
 ---
 
